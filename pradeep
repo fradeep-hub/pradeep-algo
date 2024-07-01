@@ -1,18 +1,32 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
-// Function to find two indices such that their values add up to the target
-std::vector<int> twoSum(const std::vector<int>& nums, int target) {
-    int n = nums.size();
-    // Check all possible pairs
-    for (int i = 0; i < n; ++i) {
-        for (int j = i + 1; j < n; ++j) {
-            if (nums[i] + nums[j] == target) {
-                return {i, j}; // Return the indices of the pair
-            }
+std::vector<int> twoSum(std::vector<int>& nums, int target) {
+    std::vector<std::pair<int, int>> num_pairs; // Pair each number with its index
+    for (int i = 0; i < nums.size(); ++i) {
+        num_pairs.emplace_back(nums[i], i);
+    }
+
+    // Sorting the pairs based on the number value
+    std::sort(num_pairs.begin(), num_pairs.end());
+
+    int left = 0;
+    int right = nums.size() - 1;
+
+    // Using the  two-pointer technique
+    while (left < right) {
+        int sum = num_pairs[left].first + num_pairs[right].first;
+        if (sum == target) {
+            return {num_pairs[left].second, num_pairs[right].second};
+        } else if (sum < target) {
+            ++left;
+        } else {
+            --right;
         }
     }
-    return {}; // Should never reach here since the problem guarantees one solution
+
+    return {}; // 
 }
 
 int main() {
